@@ -1,7 +1,7 @@
 import React from 'react';
 import "./Sidebar.css"
 import {LineStyle,PersonOutline, PostAddOutlined} from "@material-ui/icons"
-import { ArticleOutlined, PhotoCameraBackOutlined } from '@mui/icons-material';
+import { ArticleOutlined, PhotoCameraBackOutlined,ShoppingBasketOutlined, EventAvailableOutlined } from '@mui/icons-material';
 import { NavLink } from 'react-router-dom';
 
 const Sidebar = () => {
@@ -24,19 +24,24 @@ const Sidebar = () => {
                                  <PersonOutline/>Users
                             </li>
                         </NavLink>
-                        <NavLink to="/posts" className="sidebarLink" style={{color:'GrayText',textDecoration:'none'}}> 
+                        <NavLink to="/products" className="sidebarLink" style={{color:'GrayText',textDecoration:'none'}}> 
                             <li className="sidebarListItem">
-                                <PhotoCameraBackOutlined/>Posts
+                                <ShoppingBasketOutlined/> Products
                             </li>
                         </NavLink>
-                        <NavLink to="/articles" className="sidebarLink" style={{color:'GrayText',textDecoration:'none'}}> 
+                        <NavLink to="/events" className="sidebarLink" style={{color:'GrayText',textDecoration:'none'}}> 
                             <li className="sidebarListItem">
-                                <ArticleOutlined/>Articles 
+                                <EventAvailableOutlined/>Events 
                             </li>
                         </NavLink>
-                        <NavLink to="/newArticle" className="sidebarLink" style={{color:'GrayText',textDecoration:'none'}}>
+                        {/* <NavLink to="/newArticle" className="sidebarLink" style={{color:'GrayText',textDecoration:'none'}}>
                             <li className="sidebarListItem">
                                 <PostAddOutlined/>New Article
+                            </li>
+                        </NavLink> */}
+                        <NavLink to="/newEvent" className="sidebarLink" style={{color:'GrayText',textDecoration:'none'}}>
+                            <li className="sidebarListItem">
+                                <PostAddOutlined/>New Event
                             </li>
                         </NavLink>
                     </ul>

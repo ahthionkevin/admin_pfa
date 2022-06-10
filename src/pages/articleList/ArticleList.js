@@ -17,19 +17,19 @@ const ArticleList = () => {
                 }`,
             },
         };
-        axios.delete("http://localhost:8080/api/article/delete/" + id, config);
+        axios.delete("http://localhost:9000/api/events" + id, config);
         setPosts(posts.filter((item) => item.id !== id));
     };
 
     useEffect(() => {
         axios
-            .get("http://localhost:8080/api/article/")
+            .get("http://localhost:9000/api/events")
             .then((res) => setPosts(res.data));
     }, []);
 
     return (
         <div className="postList">
-            <h1>List of Article</h1>
+            <h1>List of Event</h1>
             <div className="postContainer">
                 {posts.map((post) => (
                     <div className="post-postContainer" key={post.id}>
@@ -37,7 +37,7 @@ const ArticleList = () => {
                         <div className="button-postContainer">
                             <IconButton aria-label="add to favorites">
                                 <NavLink
-                                    to={`/article/${post.id}`}
+                                    to={`/article/${post._id}`}
                                     style={{ color: "GrayText" }}
                                 >
                                     <Edit />
@@ -45,7 +45,7 @@ const ArticleList = () => {
                             </IconButton>
                             <IconButton
                                 aria-label="share"
-                                onClick={(e) => handleDelete(post.id)}
+                                onClick={(e) => handleDelete(post._id)}
                             >
                                 <Delete />
                             </IconButton>

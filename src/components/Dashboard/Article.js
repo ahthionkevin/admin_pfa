@@ -23,8 +23,8 @@ const Article = (props) => {
                 </Typography>
             </CardContent>
 
-            {post.picture && (
-                <CardMedia component="img" height="194" image={post.picture} />
+            {post.img && (
+                <CardMedia component="img" height="194" image={post.img} />
             )}
         </Card>
     );

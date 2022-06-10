@@ -26,16 +26,13 @@ const User = () => {
                 }`,
             },
         };
-        await axios.delete(
-            "http://localhost:8080/api/user/delete/" + id,
-            config
-        );
+        await axios.delete("http://localhost:9000/api/uses/" + id, config);
         routeChange();
     };
 
     useEffect(() => {
         axios
-            .get(`http://localhost:8080/api/user/${id}`)
+            .get(`http://localhost:9000/api/users/${id}`)
             .then((res) => {
                 setUser(res.data);
                 console.log(res.data);
@@ -62,27 +59,27 @@ const User = () => {
                                 aria-label="recipe"
                                 className="userShowImg"
                             >
-                                {user.firstName[0].toUpperCase()}
+                                {user.username[0].toUpperCase()}
                             </Avatar>
                         ) : (
                             <img
                                 className="userShowImg"
-                                src={user.picture}
+                                src={user.img}
                                 alt=""
                             />
                         )}
                         <div className="userShowTopTitle">
                             <span className="userShowUsername">
-                                {user.firstName}
+                                {user.username}
                             </span>
                             {user.position && (
                                 <span className="userShowUserTitle">
-                                    {user.position}
+                                    {user.isAdmin ? "Admin" : "User"}
                                 </span>
                             )}
-                            {user.company && (
+                            {user.email && (
                                 <span className="userShowUserTitle">
-                                    {user.company}
+                                    {user.email}
                                 </span>
                             )}
                         </div>
@@ -92,23 +89,23 @@ const User = () => {
                         <div className="userShowInfo">
                             <PermIdentity className="userShowIcon" />
                             <span className="userShowInfoTitle">
-                                {user.firstName + " " + user.lastName}
+                                {user.username}
                             </span>
                         </div>
                         <div className="userShowInfo">
                             <MilitaryTechOutlined className="userShowIcon" />
                             <span className="userShowInfoTitle">
-                                {user.accountType}
+                                {user.isAdmin ? "Admin" : "User"}
                             </span>
                         </div>
-                        <div className="userShowInfo">
+                        {/* <div className="userShowInfo">
                             <CalendarToday className="userShowIcon" />
                             <span className="userShowInfoTitle">
                                 {user.registrationYear === 0
                                     ? new Date().getFullYear()
                                     : user.registrationYear}
                             </span>
-                        </div>
+                        </div> */}
                         <span className="userShowTitle">Contact Details</span>
                         <div className="userShowInfo">
                             <MailOutline className="userShowIcon" />

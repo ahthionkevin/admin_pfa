@@ -12,15 +12,7 @@ import React, { useEffect, useState } from "react";
 import "./Post.css";
 
 const Post = (props) => {
-    const [user, setUser] = useState({});
-
     const { post } = props;
-
-    useEffect(() => {
-        axios
-            .get(`http://localhost:8080/api/user/${post.userId}`)
-            .then((res) => setUser(res.data));
-    }, []);
 
     return (
         <Card
@@ -28,24 +20,27 @@ const Post = (props) => {
             style={{ width: "350px", minHeight: "350px" }}
         >
             <CardHeader
-                avatar={
-                    user.picture === null ? (
-                        <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                            {user.firstName[0]}
-                        </Avatar>
-                    ) : (
-                        <img src={user.picture} alt="" className="userImg" />
-                    )
+                title={post.title}
+                subheader={
+                    "Last update on " +
+                    new Date(post.updatedAt).toLocaleDateString()
                 }
-                title={user.firstName + " " + user.lastName}
-                subheader={post.publicationDate}
             />
-            {post.picture && (
-                <CardMedia component="img" height="194" image={post.picture} />
+            {post.img && (
+                <CardMedia component="img" height="194" image={post.img} />
             )}
             <CardContent>
                 <Typography variant="body2" color="text.secondary">
-                    {post.content}
+                    {post.desc}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                    <b>Price</b> : {post.price} DH
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                    <b>Categories</b> : {post.categories[0]}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                    <b>Type</b> : {post.isComposite ? "compose" : "simple"}
                 </Typography>
             </CardContent>
         </Card>

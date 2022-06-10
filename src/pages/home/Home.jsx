@@ -12,39 +12,39 @@ const Home = () => {
 
     const [users,setUsers]=useState([]);
     const [lastUsers,setLastUsers]=useState([]);
-    const [lastPosts,setLastPosts]=useState([]);
-    const [posts,setPosts]=useState([]);
-    const [articles,setArticles]=useState([]);
+    const [lastProducts,setLastProducts]=useState([]);
+    const [products,setProducts]=useState([]);
+    const [events,setEvents]=useState([]);
 
     useEffect( () => {
          axios
-            .get("http://localhost:8080/api/post/")
+            .get("http://localhost:9000/api/products/")
             .then((res) => {
-                setPosts(res.data);
-                setLastPosts(res.data.slice(-5));
+                setProducts(res.data);
+                setLastProducts(res.data.slice(-5));
             });
 
-         axios.get(`http://localhost:8080/api/user/`).then((res) => {
+         axios.get(`http://localhost:9000/api/users/`).then((res) => {
             setUsers(res.data);
             setLastUsers(res.data.slice(-5));
         });
 
          axios
-            .get("http://localhost:8080/api/article/")
-            .then((res) => setArticles(res.data));
+            .get("http://localhost:9000/api/events/")
+            .then((res) => setEvents(res.data));
 
     }, [])
     return (
         <div className="home">
             <FeaturedInfo info={{
                 "users":users.length,
-                "posts":posts.length,
-                "articles":articles.length,
+                "products":products.length,
+                "events":events.length,
             }}
         />
             <div className="homeWidgets">
                 <WidgetSm lastUsers={lastUsers}/>
-                <WidgetLg lastPosts={lastPosts}/>
+                <WidgetLg lastProducts={lastProducts}/>
             </div>
         </div>
     );

@@ -8,36 +8,33 @@ const Button = ({ type }) => {
     return <button className={"widgetLgButton " + type}>{type}</button>;
 };
 
-const Transcation = ({ post }) => {
+const Transcation = ({ product }) => {
     const [poster, setPoster] = useState({});
 
-    useEffect(() => {
-        axios
-            .get(`http://localhost:8080/api/user/${post.userId}`)
-            .then((res) => setPoster(res.data));
-    }, []);
+    // useEffect(() => {
+    //     axios
+    //         .get(`http://localhost:8080/api/user/${post.userId}`)
+    //         .then((res) => setPoster(res.data));
+    // }, []);
     return (
         <>
             <tr className="widgetLgTr">
                 <td className="widgetLgUser">
-                    {poster.picture === null ? (
+                    {product.img === null ? (
                         <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                            {poster.firstName[0]}
+                            {product.name}
                         </Avatar>
                     ) : (
-                        <img
-                            src={poster.picture}
-                            alt=""
-                            className="widgetLgImg"
-                        />
+                        <img src={product.img} alt="" className="widgetLgImg" />
                     )}
 
-                    <span className="widgetLgName">
-                        {poster.lastName + " " + poster.firstName}
-                    </span>
+                    <span className="widgetLgName">{product.title}</span>
                 </td>
-                <td className="widgetLgDate">{post.publicationDate}</td>
-                <td className="widgetLgAmount">{post.content}</td>
+                <td className="widgetLgDate">{product.categories[0]}</td>
+                <td className="widgetLgAmount">{product.price} DH</td>
+                <td className="widgetLgAmount">
+                    {product.isComposite ? "compose" : "simple"}
+                </td>
             </tr>
         </>
     );

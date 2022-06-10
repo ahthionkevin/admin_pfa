@@ -14,16 +14,16 @@ const FeaturedInfo = ({info}) => {
             </div>
 
             <div className="featuredItem">
-                <span className="featuredTitle">Number of Posts</span>
+                <span className="featuredTitle">Number of products</span>
                 <div className="featuredNumbersContainer">
-                    <span className="featuredNumber">{info.posts} Posts <PhotoCameraBackOutlined className="featuredIcon"/></span>
+                    <span className="featuredNumber">{info.products} products <PhotoCameraBackOutlined className="featuredIcon"/></span>
                 </div>
             </div>
 
             <div className="featuredItem">
-                <span className="featuredTitle">Number of Article</span>
+                <span className="featuredTitle">Number of Events</span>
                 <div className="featuredNumbersContainer">
-                    <span className="featuredNumber">{info.articles} Articles <ArticleOutlined className="featuredIcon"/></span>
+                    <span className="featuredNumber">{info.events} events <ArticleOutlined className="featuredIcon"/></span>
                 </div>
             </div>
         </div>

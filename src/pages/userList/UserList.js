@@ -17,17 +17,17 @@ const UserList = () => {
                 }`,
             },
         };
-        axios.delete("http://localhost:8080/api/user/delete/" + id, config);
+        axios.delete("http://localhost:9000/api/users/" + id, config);
         setUsers(users.filter((item) => item.id !== id));
     };
 
     useEffect(() => {
         axios
-            .get("http://localhost:8080/api/user/")
+            .get("http://localhost:9000/api/users/")
             .then((res) => setUsers(res.data));
     }, []);
     const columns = [
-        { field: "id", headerName: "ID", width: 90 },
+        { field: "_id", headerName: "ID", width: 90 },
         {
             field: "user",
             headerName: "User",
@@ -38,7 +38,7 @@ const UserList = () => {
                         {params.row.picture ? (
                             <img
                                 className="userListImg"
-                                src={params.row.picture}
+                                src={params.row.img}
                                 alt=""
                             />
                         ) : (
@@ -47,18 +47,18 @@ const UserList = () => {
                                 aria-label="recipe"
                                 className="userListImg"
                             >
-                                {params.row.firstName[0]}
+                                {params.row.username[0]}
                             </Avatar>
                         )}
-                        {params.row.lastName + " " + params.row.firstName}
+                        {params.row.username}
                     </div>
                 );
             },
         },
         { field: "email", headerName: "Email", width: 200 },
         {
-            field: "accountType",
-            headerName: "Status",
+            field: "isAdmin",
+            headerName: "isAdmin",
             width: 120,
         },
         {

@@ -1,17 +1,13 @@
 import { Avatar } from "@material-ui/core";
-import { red } from "@material-ui/core/colors";
 import { DeleteOutline } from "@material-ui/icons";
+import { red } from "@mui/material/colors";
 import { DataGrid } from "@mui/x-data-grid";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import "./UpdateArticle.css";
+import { useNavigate, useParams } from "react-router-dom";
+import "./NewArticle.css";
 
-const UpdateArticle = () => {
-    // const [picture, setPicture] = useState("");
-    // const [isPicture, setIsPicture] = useState(false);
-    // const [content, setContent] = useState("");
-
+const NewEvent = () => {
     const handleDelete = (id) => {
         // const config = {
         //     headers: {
@@ -201,62 +197,51 @@ const UpdateArticle = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        // if (s.length > 140 || content === "") {
-        //     setError(true);
-        // } else {
-        // const config = {
-        //     headers: {
-        //         Authorization: `Bearer ${
-        //             JSON.parse(sessionStorage.getItem("token")).token
-        //         }`,
-        //     },
-        // };
-        axios
-            .put(
-                "http://localhost:9000/api/events/" + id,
-                {
+        if (relatedProducts.length < 0 || !startDate || !endDate) {
+            setError(true);
+        } else {
+            // const config = {
+            //     headers: {
+            //         Authorization: `Bearer ${
+            //             JSON.parse(sessionStorage.getItem("token")).token
+            //         }`,
+            //     },
+            // };
+            axios
+                .post("http://localhost:9000/api/events", {
                     name: name,
                     startDate: startDate,
                     endDate: endDate,
                     products: relatedProducts.map((product) => product._id),
-                }
-                // config
-            )
-            .then(() => {
-                document.querySelector("input[type=text]").value = "";
-                // document.querySelector("textarea").value = "";
-                setName("");
-                setStartDate(new Date().toLocaleDateString());
-                setEndDate(new Date().toLocaleDateString());
-                setError(false);
-                navigate("/events");
-            })
-            .catch((e) => {
-                console.log(e);
-                setError(true);
-            });
-        // }
+                })
+                .then(() => {
+                    document.querySelector("input[type=text]").value = "";
+                    // document.querySelector("textarea").value = "";
+                    setName("");
+                    setStartDate(new Date().toLocaleDateString());
+                    setEndDate(new Date().toLocaleDateString());
+                    setError(false);
+                    navigate("/events");
+                });
+        }
     };
 
+    // useEffect(async () => {
+    //     await fetch(picture)
+    //         .then((res) => {
+    //             if (res.status === 404) setIsPicture(false);
+    //             else setIsPicture(true);
+    //         })
+    //         .catch(() => setIsPicture(false));
+    // }, [picture]);
+
     useEffect(() => {
-        axios
-            .get(`http://localhost:9000/api/events/${id}`)
-            .then((res) => {
-                setName(res.data.name);
-                setStartDate(res.data.startDate);
-                setEndDate(res.data.endDate);
-                setRelatedProducts(res.data.products);
-                // setContent(res.data.content);
-                console.log(res.data);
-            })
-            .then(() => {
-                axios.get("http://localhost:9000/api/products").then((res) => {
-                    const ids = relatedProducts.map((item) => item._id);
-                    setNotRelatedProducts(
-                        res.data.filter((item) => !ids.includes(item._id))
-                    );
-                });
-            });
+        axios.get("http://localhost:9000/api/products").then((res) => {
+            const ids = relatedProducts.map((item) => item._id);
+            setNotRelatedProducts(
+                res.data.filter((item) => !ids.includes(item._id))
+            );
+        });
     }, []);
 
     useEffect(() => {
@@ -270,9 +255,9 @@ const UpdateArticle = () => {
 
     return (
         <div className="newArticle">
-            <h1>Edit Event</h1>
+            <h1>Add Event</h1>
 
-            <form action="" onSubmit={(e) => handleSubmit(e)}>
+            <form action="" onSubmit={handleSubmit}>
                 <input
                     onInput={(e) => setName(e.target.value)}
                     type="text"
@@ -332,4 +317,4 @@ const UpdateArticle = () => {
     );
 };
 
-export default UpdateArticle;
+export default NewEvent;
