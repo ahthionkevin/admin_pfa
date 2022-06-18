@@ -44,6 +44,11 @@ const Sidebar = () => {
                                 <PostAddOutlined/>New Event
                             </li>
                         </NavLink>
+                        <NavLink to="/newProduct" className="sidebarLink" style={{color:'GrayText',textDecoration:'none'}}>
+                            <li className="sidebarListItem">
+                                <PostAddOutlined/>New Product
+                            </li>
+                        </NavLink>
                     </ul>
                 </div>
             </div>

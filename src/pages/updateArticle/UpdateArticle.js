@@ -3,7 +3,7 @@ import { red } from "@material-ui/core/colors";
 import { DeleteOutline } from "@material-ui/icons";
 import { DataGrid } from "@mui/x-data-grid";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import "./UpdateArticle.css";
 
@@ -41,6 +41,9 @@ const UpdateArticle = () => {
     const [name, setName] = useState("");
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
+    const [msg, setMsg] = useState("");
+    const [type, setType] = useState("PROMO");
+    const [reduction, setreduction] = useState(0);
     const [notRelatedProducts, setNotRelatedProducts] = useState([]);
     const [relatedProducts, setRelatedProducts] = useState([]);
 
@@ -198,7 +201,7 @@ const UpdateArticle = () => {
         },
     ];
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         // if (s.length > 140 || content === "") {
@@ -211,62 +214,133 @@ const UpdateArticle = () => {
         //         }`,
         //     },
         // };
-        axios
-            .put(
-                "http://localhost:9000/api/events/" + id,
-                {
-                    name: name,
-                    startDate: startDate,
-                    endDate: endDate,
-                    products: relatedProducts.map((product) => product._id),
-                }
-                // config
-            )
-            .then(() => {
-                document.querySelector("input[type=text]").value = "";
-                // document.querySelector("textarea").value = "";
-                setName("");
-                setStartDate(new Date().toLocaleDateString());
-                setEndDate(new Date().toLocaleDateString());
-                setError(false);
-                navigate("/events");
+        Promise.all(
+            relatedProducts.map((p) => {
+                const product = p;
+                const _id = product._id;
+                delete product._id;
+                delete product.createdAt;
+                delete product.updatedAt;
+                delete product.__v;
+                axios
+                    .put(`http://localhost:9000/api/products/${_id}`, {
+                        ...product,
+                        reducePrice:
+                            product.price - (product.price * reduction) / 100,
+                    })
+                    .then((r) => product._id)
+                    .catch((e) => {
+                        setError(true);
+                        console.log(e);
+                    });
+                return _id;
             })
-            .catch((e) => {
-                console.log(e);
-                setError(true);
-            });
+        ).then((res) => {
+            axios
+                .put(
+                    "http://localhost:9000/api/events/" + id,
+                    {
+                        name: name,
+                        startDate: startDate,
+                        endDate: endDate,
+                        // products: relatedProducts.map((product) => product._id),
+                        products: res,
+                        type: type,
+                        reduction: type === "SALE" ? reduction : 0,
+                        msg: msg,
+                    }
+                    // config
+                )
+                .then(() => {
+                    document.querySelector("input[type=text]").value = "";
+                    // document.querySelector("textarea").value = "";
+                    setName("");
+                    setStartDate(new Date().toLocaleDateString());
+                    setEndDate(new Date().toLocaleDateString());
+                    setError(false);
+                    navigate("/events");
+                })
+                .catch((e) => {
+                    console.log(e);
+                    setError(true);
+                });
+        });
+
         // }
     };
 
-    useEffect(() => {
-        axios
-            .get(`http://localhost:9000/api/events/${id}`)
-            .then((res) => {
-                setName(res.data.name);
-                setStartDate(res.data.startDate);
-                setEndDate(res.data.endDate);
-                setRelatedProducts(res.data.products);
-                // setContent(res.data.content);
-                console.log(res.data);
-            })
-            .then(() => {
-                axios.get("http://localhost:9000/api/products").then((res) => {
-                    const ids = relatedProducts.map((item) => item._id);
-                    setNotRelatedProducts(
-                        res.data.filter((item) => !ids.includes(item._id))
-                    );
-                });
-            });
+    useLayoutEffect(() => {
+        axios.get(`http://localhost:9000/api/events/${id}`).then((res) => {
+            setName(res.data.name);
+            setStartDate(res.data.startDate);
+            setEndDate(res.data.endDate);
+            setRelatedProducts(res.data.products);
+            setMsg(res.data.msg);
+            setreduction(res.data.reduction);
+            setType(res.data.type);
+            console.log(res.data);
+        });
+        // .then(() => {});
     }, []);
 
     useEffect(() => {
         axios.get("http://localhost:9000/api/products").then((res) => {
             const ids = relatedProducts.map((item) => item._id);
-            setNotRelatedProducts(
-                res.data.filter((item) => !ids.includes(item._id))
-            );
+            if (type === "SALE") {
+                setNotRelatedProducts(
+                    res.data.filter(
+                        (item) =>
+                            !ids.includes(item._id) &&
+                            item.expiration > startDate &&
+                            item.expiration < endDate
+                    )
+                );
+            } else if (type === "NEW") {
+                setNotRelatedProducts(
+                    res.data.filter(
+                        (item) =>
+                            !ids.includes(item._id) &&
+                            item.createdAt > startDate &&
+                            item.createdAt < endDate
+                    )
+                );
+            } else {
+                setNotRelatedProducts(
+                    res.data.filter((item) => !ids.includes(item._id))
+                );
+            }
         });
-    }, [relatedProducts]);
+    }, []);
+
+    useEffect(() => {
+        axios.get("http://localhost:9000/api/products").then((res) => {
+            const ids = relatedProducts.map((item) => item._id);
+
+            if (type === "SALE") {
+                setNotRelatedProducts(
+                    res.data.filter(
+                        (item) =>
+                            !ids.includes(item._id) &&
+                            item.expiration > startDate &&
+                            item.expiration < endDate
+                    )
+                );
+            } else if (type === "NEW") {
+                setNotRelatedProducts(
+                    res.data.filter(
+                        (item) =>
+                            !ids.includes(item._id) &&
+                            item.createdAt > startDate &&
+                            item.createdAt < endDate
+                    )
+                );
+            } else {
+                setNotRelatedProducts(
+                    res.data.filter((item) => !ids.includes(item._id))
+                );
+            }
+        });
+    }, [relatedProducts, type, startDate, endDate]);
 
     return (
         <div className="newArticle">
@@ -300,6 +374,43 @@ const UpdateArticle = () => {
                     autoComplete="off"
                     value={endDate.substring(0, 10)}
                 />
+                <textarea
+                    onInput={(e) => setMsg(e.target.value)}
+                    type="text"
+                    name="msg"
+                    id="msg"
+                    placeholder="Message"
+                    autoComplete="off"
+                    value={msg}
+                    rows={30}
+                ></textarea>
+                <select onChange={(e) => setType(e.target.value)}>
+                    <option value={"NEW"} selected={type === "NEW"}>
+                        NEW
+                    </option>
+                    <option value={"PROMO"} selected={type === "PROMO"}>
+                        PROMOTION
+                    </option>
+                    <option value={"SALE"} selected={type === "SALE"}>
+                        SALES
+                    </option>
+                </select>
+                {type === "SALE" && (
+                    <>
+                        <input
+                            onInput={(e) => setreduction(e.target.value)}
+                            type="range"
+                            min={0}
+                            max={100}
+                            name="reduction"
+                            id="reduction"
+                            placeholder="Reduction Percentage"
+                            autoComplete="off"
+                            value={reduction}
+                        />
+                        <span>{reduction} %</span>
+                    </>
+                )}
                 {error && <p>Veuillez ecrire moins de 140 caracteres</p>}
                 <input type="submit" value="Update" />
                 <br />

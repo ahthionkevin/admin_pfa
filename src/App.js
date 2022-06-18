@@ -16,6 +16,7 @@ import PostList from "./pages/postList/PostList";
 import ArticleList from "./pages/articleList/ArticleList";
 import UpdateProduct from "./pages/updateProduct/UpdateProduct";
 import NewEvent from "./pages/newEvent/NewEvent";
+import NewProduct from "./pages/newProduct/NewProduct";
 
 function App() {
     // const { token, setToken } = useToken();
@@ -43,6 +44,7 @@ function App() {
                             element={<UpdateProduct />}
                         />
                         <Route path="/newEvent" element={<NewEvent />} />
+                        <Route path="/newProduct" element={<NewProduct />} />
                     </Routes>
                 </div>
             </BrowserRouter>

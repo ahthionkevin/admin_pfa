@@ -37,6 +37,9 @@ const Post = (props) => {
                     <b>Price</b> : {post.price} DH
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
+                    <b>Reduce Price</b> : {post.reducePrice} DH
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
                     <b>Categories</b> : {post.categories[0]}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">

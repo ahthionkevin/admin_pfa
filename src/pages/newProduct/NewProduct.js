@@ -427,30 +427,6 @@ const UpdateProduct = () => {
                 });
         }
     };
-    useEffect(() => {
-        axios
-            .get(`http://localhost:9000/api/products/find/${id}`)
-            .then((res) => {
-                setName(res.data.title);
-                setDesc(res.data.desc);
-                setPrice(res.data.price);
-                setIsComposite(res.data.isComposite);
-                setImg(res.data.img);
-
-                setCategory(res.data.categories);
-                setReduction(res.data.reduction);
-                setExpiration(res.data.expiration);
-                setReducePrice(res.data.reducePrice);
-                setComponents(res.data.components);
-                // setContent(res.data.content);
-                console.log(res.data);
-
-                return res;
-            });
-        // .then((res) => {
-        //     if (isComposite) setComponents(res.data.components);
-        // });
-    }, []);
 
     useEffect(() => {
         axios.get("http://localhost:9000/api/products").then((res) => {
@@ -483,7 +459,7 @@ const UpdateProduct = () => {
 
     return (
         <div className="newArticle">
-            <h1>Edit Product</h1>
+            <h1>Add Product</h1>
 
             <form action="" onSubmit={(e) => handleSubmit(e)}>
                 {isPicture && (
