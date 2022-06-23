@@ -56,3 +56,67 @@ input[type="submit"]:hover{
 .add_component{
     margin-left: 30px;
 }
+
+
+
+.img-container{
+    padding: 0;
+    margin: 0;
+    margin-bottom: 10px;
+ }
+ 
+ .newArticle{
+     flex: 4;
+ }
+ 
+ .newArticle h1{
+     text-align: center;
+     margin-bottom: 10px;
+ }
+ 
+ .newArticle form{
+     display: grid;
+     min-width: 400px;
+     text-align: center;
+     width: 50%;
+     max-width: 600px;
+     margin: 0 auto;
+ }
+ 
+ .newArticle form input,.newArticle form textarea,.newArticle form select,.add_component{
+     margin: 5px 0;
+       padding: 5px;
+       border-radius: 5px;
+       border: 1px solid #61dafb;
+       resize: none;
+       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+ }
+ .newArticle form textarea{
+     height: 80px;
+ }
+ 
+ .newArticle form p{
+     font-size: 0.8rem;
+     color: red;  
+ }
+ 
+ input[type="submit"],.add_component {
+     width: 200px;
+     margin-left: auto;
+    
+     cursor: pointer;
+     transition: 0.4s;
+     background: #61dafb;
+ }
+ 
+ input[type="submit"]:hover{
+     background: #2d4247 ;
+     color: white;
+ }
+ 
+ 
+ 
+ 
+ .add_component{
+     margin-left: 30px;
+ }

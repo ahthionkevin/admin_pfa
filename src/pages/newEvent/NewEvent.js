@@ -1,5 +1,9 @@
 import { Avatar } from "@material-ui/core";
-import { DeleteOutline } from "@material-ui/icons";
+import {
+    AddCircleOutline,
+    DeleteOutline,
+    RemoveCircleOutline,
+} from "@material-ui/icons";
 import { red } from "@mui/material/colors";
 import { DataGrid } from "@mui/x-data-grid";
 import axios from "axios";
@@ -113,7 +117,7 @@ const NewEvent = () => {
                         {/* <Link to={"/events/" + params.row._id}>
                             <button className="userListEdit">View</button>
                         </Link> */}
-                        <DeleteOutline
+                        <RemoveCircleOutline
                             className="userListDelete"
                             onClick={() => handleDelete(params.row._id)}
                         />
@@ -188,8 +192,8 @@ const NewEvent = () => {
                         {/* <Link to={"/events/" + params.row._id}>
                             <button className="userListEdit">View</button>
                         </Link> */}
-                        <DeleteOutline
-                            className="userListDelete"
+                        <AddCircleOutline
+                            className="userListDelete add"
                             onClick={() => handleDelete2(params.row)}
                         />
                     </>

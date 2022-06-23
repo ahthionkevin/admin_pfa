@@ -382,8 +382,8 @@ const UpdateProduct = () => {
         else {
             const cs = components;
             axios
-                .put(
-                    "http://localhost:9000/api/products/" + id,
+                .post(
+                    "http://localhost:9000/api/products/",
                     {
                         title: name,
                         desc: desc,
@@ -518,6 +518,15 @@ const UpdateProduct = () => {
                     placeholder="picture"
                     autoComplete="off"
                     value={img}
+                />
+                <input
+                    onInput={(e) => setExpiration(e.target.value)}
+                    type="date"
+                    name="startDate"
+                    id="startDate"
+                    placeholder="Expiration date"
+                    autoComplete="off"
+                    value={expiration.substring(0, 10)}
                 />
                 <select
                     onChange={(e) => {

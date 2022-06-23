@@ -1,6 +1,10 @@
 import { Avatar } from "@material-ui/core";
 import { red } from "@material-ui/core/colors";
-import { DeleteOutline } from "@material-ui/icons";
+import {
+    AddCircleOutline,
+    DeleteOutline,
+    RemoveCircleOutline,
+} from "@material-ui/icons";
 import { DataGrid } from "@mui/x-data-grid";
 import axios from "axios";
 import React, { useEffect, useLayoutEffect, useState } from "react";
@@ -116,7 +120,7 @@ const UpdateArticle = () => {
                         {/* <Link to={"/events/" + params.row._id}>
                             <button className="userListEdit">View</button>
                         </Link> */}
-                        <DeleteOutline
+                        <RemoveCircleOutline
                             className="userListDelete"
                             onClick={() => handleDelete(params.row._id)}
                         />
@@ -191,8 +195,8 @@ const UpdateArticle = () => {
                         {/* <Link to={"/events/" + params.row._id}>
                             <button className="userListEdit">View</button>
                         </Link> */}
-                        <DeleteOutline
-                            className="userListDelete"
+                        <AddCircleOutline
+                            className="userListDelete add"
                             onClick={() => handleDelete2(params.row)}
                         />
                     </>

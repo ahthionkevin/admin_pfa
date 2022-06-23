@@ -9,14 +9,13 @@ const Sidebar = () => {
         <div className="sidebar">
             <div className="sidebarWrapper">
                 <div className="sidebarMenu">
-                    <h3 className="sidebarTitled">Dashboard</h3>
+                    <h3 className="sidebarTitle">Dashboard</h3>
                 </div>
-                <br/>
                 <div className="sidebarMenu">
-                    <h3 className="sidebarTitlem">Quick Menu</h3>
+                    <h3 className="sidebarTitle">Quick Menu</h3>
                     <ul className="sidebarList">
                         <NavLink to="/" className="sidebarLink" style={{color:'GrayText',textDecoration:'none'}} >
-                            <li className="sidebarListItem">
+                            <li className="sidebarListItem active">
                                 <LineStyle className="sidebarIcon" />Home
                             </li>
                         </NavLink>  

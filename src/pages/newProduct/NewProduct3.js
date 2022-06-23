@@ -1,14 +1,10 @@
 import { Avatar } from "@material-ui/core";
 import { red } from "@material-ui/core/colors";
-import {
-    AddCircleOutline,
-    DeleteOutline,
-    RemoveCircleOutline,
-} from "@material-ui/icons";
+import { DeleteOutline } from "@material-ui/icons";
 import { AvatarGroup } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import axios from "axios";
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import "./UpdateArticle.css";
 
@@ -209,7 +205,7 @@ const UpdateProduct = () => {
                         {/* <Link to={"/events/" + params.row._id}>
                             <button className="userListEdit">View</button>
                         </Link> */}
-                        <RemoveCircleOutline
+                        <DeleteOutline
                             className="userListDelete"
                             onClick={() => handleDelete(params.row._id)}
                         />
@@ -284,7 +280,7 @@ const UpdateProduct = () => {
                         {/* <Link to={"/events/" + params.row._id}>
                             <button className="userListEdit">View</button>
                         </Link> */}
-                        <RemoveCircleOutline
+                        <DeleteOutline
                             className="userListDelete"
                             onClick={() => handleDelete1(params.row._id)}
                         />
@@ -359,8 +355,8 @@ const UpdateProduct = () => {
                         {/* <Link to={"/events/" + params.row._id}>
                             <button className="userListEdit">View</button>
                         </Link> */}
-                        <AddCircleOutline
-                            className="userListDelete add"
+                        <DeleteOutline
+                            className="userListDelete"
                             onClick={() => handleDelete2(params.row)}
                         />
                     </>
@@ -431,42 +427,6 @@ const UpdateProduct = () => {
                 });
         }
     };
-    useLayoutEffect(() => {
-        axios
-            .get(`http://localhost:9000/api/products/find/${id}`)
-            .then((res) => {
-                setName(res.data.title);
-                setDesc(res.data.desc);
-                setPrice(res.data.price);
-                setIsComposite(res.data.isComposite);
-                setImg(res.data.img);
-
-                setCategory(res.data.categories);
-                setReduction(res.data.reduction);
-                setExpiration(res.data.expiration);
-                setReducePrice(res.data.reducePrice);
-                // setComponents(res.data.components);
-                // setContent(res.data.content);
-                console.log(res.data);
-
-                if (res.data.isComposite == true)
-                    setComponents(res.data.components);
-
-                return res;
-            });
-    }, []);
-
-    // useEffect(() => {
-    //     if (isComposite) {
-    //         axios
-    //             .get(`http://localhost:9000/api/products/find/${id}`)
-    //             .then((res) => {
-    //                 console.log("============================");
-    //                 console.log(res.data);
-    //                 setComponents(res.data.components);
-    //             });
-    //     }
-    // }, []);
 
     useEffect(() => {
         axios.get("http://localhost:9000/api/products").then((res) => {
@@ -499,7 +459,7 @@ const UpdateProduct = () => {
 
     return (
         <div className="newArticle">
-            <h1>Edit Product</h1>
+            <h1>Add Product</h1>
 
             <form action="" onSubmit={(e) => handleSubmit(e)}>
                 {isPicture && (
@@ -520,7 +480,7 @@ const UpdateProduct = () => {
                     type="text"
                     name="name"
                     id="name"
-                    placeholder="Name of the Event"
+                    placeholder="Nom du produit"
                     autoComplete="off"
                     value={name}
                 />
@@ -535,6 +495,17 @@ const UpdateProduct = () => {
                     value={desc}
                 ></textarea>
                 <input
+                    // onInput={(e) => {
+                    //     setPrice(e.target.value);
+                    //     const props = Math.floor( price - (parseFloat(reduction) * price) / 100).toFixed(2);
+                    //         shouldComponentUpdate( {
+                    //             nextProps= setReducePrice(props);
+                    //             if (nextProps.order !== this.props.order) {
+                    //               return true;
+                    //             }
+                    //             return false;
+                    //           });
+                    // }}
                     onInput={(e) => {
                         setPrice(e.target.value);
                         setReducePrice(
@@ -544,13 +515,14 @@ const UpdateProduct = () => {
                         );
                     }}
                     type="number"
+                    step=".01" //here1
                     name="price"
                     id="price"
-                    placeholder="Price"
+                    placeholder="Prix"
                     autoComplete="off"
                     value={`${price}`}
                 />
-                <input
+                {/* <input
                     onInput={(e) => setImg(e.target.value)}
                     type="text"
                     name="img"
@@ -558,18 +530,9 @@ const UpdateProduct = () => {
                     placeholder="picture"
                     autoComplete="off"
                     value={img}
-                />
-                <input
-                    onInput={(e) => setExpiration(e.target.value)}
-                    type="date"
-                    name="startDate"
-                    id="startDate"
-                    placeholder="Expiration date"
-                    autoComplete="off"
-                    value={expiration.substring(0, 10)}
-                />
+                /> */}
                 <select
-                    onChange={(e) => {
+                    onInput={(e) => {
                         if (e.target.value == 1) setIsComposite(true);
                         else setIsComposite(false);
                         console.log(e.target.value);
@@ -588,7 +551,6 @@ const UpdateProduct = () => {
                     type="number"
                     name="reducePrice"
                     id="reducePrice"
-                    placeholder="reducePrice"
                     autoComplete="off"
                     value={reducePrice}
                 />
@@ -596,11 +558,14 @@ const UpdateProduct = () => {
                     onInput={(e) => {
                         setReduction(e.target.value);
                         setReducePrice(
-                            price - (parseFloat(reduction) * price) / 100
+                            (
+                                price -
+                                (parseFloat(reduction) * price) / 100
+                            ).toFixed(2)
                         );
                     }}
                     type="range"
-                    min={0}
+                    min={1}
                     max={100}
                     name="reduction"
                     id="reduction"
@@ -608,10 +573,19 @@ const UpdateProduct = () => {
                     autoComplete="off"
                     value={reduction}
                 />
-                <span>{reduction} %</span>
-                {error && <p>Verifier vos informations</p>}
-                <div>
-                    <input type="submit" value="Update" />
+                <span style={{ color: "red" }}>-{reduction} %</span>
+                {error && <p>Vérifier vos informations</p>}
+                <div style={{ flex: 1 }}>
+                    <input
+                        style={{ width: 200 }}
+                        id="img"
+                        onInput={(e) => setImg(e.target.value)}
+                        type="file"
+                        inputProps={{ accept: "image/*" }}
+                        name="img"
+                    />
+                    &nbsp;&nbsp;
+                    <input type="submit" value="Ajouter" />
                 </div>
                 <br />
             </form>
@@ -680,7 +654,7 @@ const UpdateProduct = () => {
                             autoComplete="off"
                             value={max}
                         />
-                        {error && <p>Verifier vos informations</p>}
+                        {error && <p>Vérifier vos informations</p>}
                         <div>
                             <button
                                 type="button"
@@ -694,7 +668,7 @@ const UpdateProduct = () => {
                     </form>
 
                     <div className="mb-2">
-                        <h1>Related product</h1>
+                        <h1>Related products</h1>
                         <DataGrid
                             rows={relatedProducts}
                             disableSelectionOnClick
@@ -707,7 +681,7 @@ const UpdateProduct = () => {
                     <br />
                     <br />
                     <div className="mt-2">
-                        <h1>Other product</h1>
+                        <h1>Other products</h1>
                         <DataGrid
                             rows={notRelatedProducts}
                             disableSelectionOnClick
