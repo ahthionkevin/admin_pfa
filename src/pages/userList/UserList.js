@@ -56,11 +56,11 @@ const UserList = () => {
             },
         },
         { field: "email", headerName: "Email", width: 200 },
-        {
-            field: "isAdmin",
-            headerName: "isAdmin",
-            width: 120,
-        },
+        // {
+        //     field: "isAdmin",
+        //     headerName: "isAdmin",
+        //     width: 120,
+        // },
         {
             field: "action",
             headerName: "Action",

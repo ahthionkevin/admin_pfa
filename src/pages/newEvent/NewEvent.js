@@ -207,6 +207,8 @@ const NewEvent = () => {
 
         if (relatedProducts.length < 0 || !startDate || !endDate) {
             setError(true);
+        } else if (!name || !startDate || !endDate || !msg) {
+            setError(true);
         } else {
             // const config = {
             //     headers: {
@@ -446,8 +448,12 @@ const NewEvent = () => {
                         <span>{reduction} %</span>
                     </>
                 )}
-                {error && <p>Veuillez ecrire moins de 140 caracteres</p>}
-                <input type="submit" value="Update" />
+                {error && (
+                    <p>
+                        Veuillez verifier les informations que vous avez saisis
+                    </p>
+                )}
+                <input type="submit" value="Create" />
                 <br />
             </form>
             <div className="mb-2">

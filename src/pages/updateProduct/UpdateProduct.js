@@ -520,7 +520,7 @@ const UpdateProduct = () => {
                     type="text"
                     name="name"
                     id="name"
-                    placeholder="Name of the Event"
+                    placeholder="Product Name"
                     autoComplete="off"
                     value={name}
                 />
@@ -534,6 +534,44 @@ const UpdateProduct = () => {
                     autoComplete="off"
                     value={desc}
                 ></textarea>
+                <input
+                    onKeyPress={(e) => {
+                        if (e.key == "Enter") {
+                            e.preventDefault();
+                            setCategory([...category, e.target.value]);
+                            e.target.value = "";
+                        }
+                    }}
+                    type="text"
+                    name="name"
+                    id="name"
+                    placeholder="Category Name"
+                    autoComplete="off"
+                />
+                {category.length > 0 && (
+                    <p style={{ display: "flex", flexWrap: "wrap" }}>
+                        {category.map((c) => (
+                            <span
+                                style={{
+                                    color: "white",
+                                    padding: "2px",
+                                    paddingLeft: "7px",
+                                    paddingRight: "7px",
+                                    borderRadius: "15px",
+                                    backgroundColor: "grey",
+                                    cursor: "pointer",
+                                }}
+                                onDoubleClick={(e) =>
+                                    setCategory(
+                                        category.filter((item) => item != c)
+                                    )
+                                }
+                            >
+                                {c}
+                            </span>
+                        ))}
+                    </p>
+                )}
                 <input
                     onInput={(e) => {
                         setPrice(e.target.value);
@@ -645,7 +683,7 @@ const UpdateProduct = () => {
                             type="text"
                             name="descComponent"
                             id="descComponent"
-                            placeholder="Description de Component"
+                            placeholder="Description of Component"
                             autoComplete="off"
                             value={descComponent}
                         ></textarea>

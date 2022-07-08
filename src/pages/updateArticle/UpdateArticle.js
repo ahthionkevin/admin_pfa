@@ -218,57 +218,62 @@ const UpdateArticle = () => {
         //         }`,
         //     },
         // };
-        Promise.all(
-            relatedProducts.map((p) => {
-                const product = p;
-                const _id = product._id;
-                delete product._id;
-                delete product.createdAt;
-                delete product.updatedAt;
-                delete product.__v;
-                axios
-                    .put(`http://localhost:9000/api/products/${_id}`, {
-                        ...product,
-                        reducePrice:
-                            product.price - (product.price * reduction) / 100,
-                    })
-                    .then((r) => product._id)
-                    .catch((e) => {
-                        setError(true);
-                        console.log(e);
-                    });
-                return _id;
-            })
-        ).then((res) => {
-            axios
-                .put(
-                    "http://localhost:9000/api/events/" + id,
-                    {
-                        name: name,
-                        startDate: startDate,
-                        endDate: endDate,
-                        // products: relatedProducts.map((product) => product._id),
-                        products: res,
-                        type: type,
-                        reduction: type === "SALE" ? reduction : 0,
-                        msg: msg,
-                    }
-                    // config
-                )
-                .then(() => {
-                    document.querySelector("input[type=text]").value = "";
-                    // document.querySelector("textarea").value = "";
-                    setName("");
-                    setStartDate(new Date().toLocaleDateString());
-                    setEndDate(new Date().toLocaleDateString());
-                    setError(false);
-                    navigate("/events");
+        if (name && startDate && endDate && msg) {
+            Promise.all(
+                relatedProducts.map((p) => {
+                    const product = p;
+                    const _id = product._id;
+                    delete product._id;
+                    delete product.createdAt;
+                    delete product.updatedAt;
+                    delete product.__v;
+                    axios
+                        .put(`http://localhost:9000/api/products/${_id}`, {
+                            ...product,
+                            reducePrice:
+                                product.price -
+                                (product.price * reduction) / 100,
+                        })
+                        .then((r) => product._id)
+                        .catch((e) => {
+                            setError(true);
+                            console.log(e);
+                        });
+                    return _id;
                 })
-                .catch((e) => {
-                    console.log(e);
-                    setError(true);
-                });
-        });
+            ).then((res) => {
+                axios
+                    .put(
+                        "http://localhost:9000/api/events/" + id,
+                        {
+                            name: name,
+                            startDate: startDate,
+                            endDate: endDate,
+                            // products: relatedProducts.map((product) => product._id),
+                            products: res,
+                            type: type,
+                            reduction: type === "SALE" ? reduction : 0,
+                            msg: msg,
+                        }
+                        // config
+                    )
+                    .then(() => {
+                        document.querySelector("input[type=text]").value = "";
+                        // document.querySelector("textarea").value = "";
+                        setName("");
+                        setStartDate(new Date().toLocaleDateString());
+                        setEndDate(new Date().toLocaleDateString());
+                        setError(false);
+                        navigate("/events");
+                    })
+                    .catch((e) => {
+                        console.log(e);
+                        setError(true);
+                    });
+            });
+        } else {
+            setError(true);
+        }
 
         // }
     };
@@ -415,7 +420,7 @@ const UpdateArticle = () => {
                         <span>{reduction} %</span>
                     </>
                 )}
-                {error && <p>Veuillez ecrire moins de 140 caracteres</p>}
+                {error && <p>Veuillez verifier vos information</p>}
                 <input type="submit" value="Update" />
                 <br />
             </form>

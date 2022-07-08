@@ -1,6 +1,7 @@
 import { Avatar } from "@material-ui/core";
 import { red } from "@material-ui/core/colors";
-import { DeleteOutline } from "@material-ui/icons";
+import { DeleteOutline, RemoveCircleOutline } from "@material-ui/icons";
+import { AddCircleOutline } from "@mui/icons-material";
 import { AvatarGroup } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import axios from "axios";
@@ -205,7 +206,7 @@ const UpdateProduct = () => {
                         {/* <Link to={"/events/" + params.row._id}>
                             <button className="userListEdit">View</button>
                         </Link> */}
-                        <DeleteOutline
+                        <RemoveCircleOutline
                             className="userListDelete"
                             onClick={() => handleDelete(params.row._id)}
                         />
@@ -280,7 +281,7 @@ const UpdateProduct = () => {
                         {/* <Link to={"/events/" + params.row._id}>
                             <button className="userListEdit">View</button>
                         </Link> */}
-                        <DeleteOutline
+                        <RemoveCircleOutline
                             className="userListDelete"
                             onClick={() => handleDelete1(params.row._id)}
                         />
@@ -355,8 +356,8 @@ const UpdateProduct = () => {
                         {/* <Link to={"/events/" + params.row._id}>
                             <button className="userListEdit">View</button>
                         </Link> */}
-                        <DeleteOutline
-                            className="userListDelete"
+                        <AddCircleOutline
+                            className="userListDelete add"
                             onClick={() => handleDelete2(params.row)}
                         />
                     </>
@@ -480,7 +481,7 @@ const UpdateProduct = () => {
                     type="text"
                     name="name"
                     id="name"
-                    placeholder="Name of the Event"
+                    placeholder="Product Name"
                     autoComplete="off"
                     value={name}
                 />
@@ -495,6 +496,44 @@ const UpdateProduct = () => {
                     value={desc}
                 ></textarea>
                 <input
+                    onKeyPress={(e) => {
+                        if (e.key == "Enter") {
+                            e.preventDefault();
+                            setCategory([...category, e.target.value]);
+                            e.target.value = "";
+                        }
+                    }}
+                    type="text"
+                    name="name"
+                    id="name"
+                    placeholder="Category Name"
+                    autoComplete="off"
+                />
+                {category.length > 0 && (
+                    <p style={{ display: "flex", flexWrap: "wrap" }}>
+                        {category.map((c) => (
+                            <span
+                                style={{
+                                    color: "white",
+                                    padding: "2px",
+                                    paddingLeft: "7px",
+                                    paddingRight: "7px",
+                                    borderRadius: "15px",
+                                    backgroundColor: "grey",
+                                    cursor: "pointer",
+                                }}
+                                onDoubleClick={(e) =>
+                                    setCategory(
+                                        category.filter((item) => item != c)
+                                    )
+                                }
+                            >
+                                {c}
+                            </span>
+                        ))}
+                    </p>
+                )}
+                <input
                     onInput={(e) => {
                         setPrice(e.target.value);
                         setReducePrice(
@@ -504,6 +543,7 @@ const UpdateProduct = () => {
                         );
                     }}
                     type="number"
+                    min={0}
                     name="price"
                     id="price"
                     placeholder="Price"
@@ -556,7 +596,9 @@ const UpdateProduct = () => {
                     onInput={(e) => {
                         setReduction(e.target.value);
                         setReducePrice(
-                            price - (parseFloat(reduction) * price) / 100
+                            Math.floor(
+                                price - (parseFloat(reduction) * price) / 100
+                            )
                         );
                     }}
                     type="range"
@@ -571,7 +613,7 @@ const UpdateProduct = () => {
                 <span>{reduction} %</span>
                 {error && <p>Verifier vos informations</p>}
                 <div>
-                    <input type="submit" value="Update" />
+                    <input type="submit" value="Create" />
                 </div>
                 <br />
             </form>
@@ -605,7 +647,7 @@ const UpdateProduct = () => {
                             type="text"
                             name="descComponent"
                             id="descComponent"
-                            placeholder="Description de Component"
+                            placeholder="Description of Component"
                             autoComplete="off"
                             value={descComponent}
                         ></textarea>
