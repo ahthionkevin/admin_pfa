@@ -533,8 +533,7 @@ const UpdateProduct = () => {
                         ))}
                     </p>
                 )}
-                <input
-                    onInput={(e) => {
+               onInput={(e) => {
                         setPrice(e.target.value);
                         setReducePrice(
                             Math.floor(
@@ -543,10 +542,10 @@ const UpdateProduct = () => {
                         );
                     }}
                     type="number"
-                    min={0}
+                    step=".01"  //here1
                     name="price"
                     id="price"
-                    placeholder="Price"
+                    placeholder="Prix"
                     autoComplete="off"
                     value={`${price}`}
                 />
@@ -596,9 +595,7 @@ const UpdateProduct = () => {
                     onInput={(e) => {
                         setReduction(e.target.value);
                         setReducePrice(
-                            Math.floor(
-                                price - (parseFloat(reduction) * price) / 100
-                            )
+                            (price - (parseFloat(reduction) * price) / 100).toFixed(2)
                         );
                     }}
                     type="range"
